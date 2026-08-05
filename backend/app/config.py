@@ -18,4 +18,10 @@ class Settings:
     )
 
 
+    database_url: str = os.getenv(
+        "DATABASE_URL",
+        "sqlite:///./meeting_notes.db",
+    )
+
+
 settings = Settings()

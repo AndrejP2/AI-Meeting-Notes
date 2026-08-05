@@ -1,21 +1,30 @@
-from fastapi import APIRouter, HTTPException
-from httpx import request
-from app.schemas.analysis import TextAnalysisModel, TextRequest
+from fastapi import APIRouter, Depends, HTTPException
+from sqlmodel import Session
+
+from app.database import get_session
+from app.schemas.analysis import (
+    MeetingResponse,
+    TextRequest,
+)
 from app.services.ai_service import (
-    analyze_meeting_text,
+    InvalidAIResponseError,
     OllamaModelNotFoundError,
     OllamaUnavailableError,
-    InvalidAIResponseError,
-    check_ollama_status
+    analyze_meeting_text,
+    check_ollama_status,
 )
+from app.services.meeting_service import save_meeting
 
 
 router = APIRouter()
 
 
 @router.get("/")
-def root():
-    return {"message": "AI Meeting Notes API"}
+def home():
+    return {
+        "message": "AI Meeting Notes API is running"
+    }
+
 
 @router.get("/status")
 def health():
@@ -28,11 +37,19 @@ def health():
             detail=str(error),
         )
 
-@router.post("/analyze-text", response_model=TextAnalysisModel)
-def analyze_text(request: TextRequest):
 
+@router.post( "/analyze-text", response_model=MeetingResponse)
+def analyze_text( request: TextRequest, session: Session = Depends(get_session) ):
     try:
-        return analyze_meeting_text(request.text)
+        analysis = analyze_meeting_text(request.text)
+
+        meeting = save_meeting(
+            session=session,
+            original_text=request.text,
+            analysis=analysis,
+        )
+
+        return meeting
 
     except OllamaModelNotFoundError as error:
         raise HTTPException(
