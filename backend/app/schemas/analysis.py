@@ -21,3 +21,7 @@ class MeetingResponse(BaseModel):
     main_points: list[str]
     action_items: list[str]
     created_at: datetime
+
+class DeleteMeetingResponse(BaseModel):
+    message: str
+    deleted_id: int

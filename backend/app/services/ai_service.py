@@ -20,7 +20,6 @@ class InvalidAIResponseError(Exception):
 
 def analyze_meeting_text(text: str) -> TextAnalysisModel:
 
-
     try:
         response = client.chat(
             model= settings.ollama_model,
