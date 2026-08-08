@@ -9,7 +9,7 @@ class TextAnalysisModel(BaseModel):
     summary: str
     keywords: list[str]
     main_points: list[str]
-    action_items: list[str]
+    action_items: list[str]  
 
 class MeetingResponse(BaseModel):
     model_config = ConfigDict(from_attributes=True)

@@ -14,7 +14,7 @@ def save_meeting(
         summary=analysis.summary,
         keywords=analysis.keywords,
         main_points=analysis.main_points,
-        action_items=analysis.action_items,
+        action_items=analysis.action_items,  
     )
 
     try:
