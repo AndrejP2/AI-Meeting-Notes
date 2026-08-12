@@ -12,7 +12,6 @@ engine = create_engine(
     connect_args=connect_args,
 )    # glavni objekt preko kojeg aplikacija komunicira s bazom
 
-
 def create_db_and_tables() -> None:
     SQLModel.metadata.create_all(engine)
 
@@ -20,3 +19,5 @@ def create_db_and_tables() -> None:
 def get_session() -> Generator[Session, None, None]:
     with Session(engine) as session:
         yield session
+
+        

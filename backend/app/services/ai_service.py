@@ -12,7 +12,7 @@ class OllamaUnavailableError(Exception):
 
 
 class OllamaModelNotFoundError(Exception):
-    pass
+    pass 
 
 
 class InvalidAIResponseError(Exception):
